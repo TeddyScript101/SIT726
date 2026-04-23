@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoHealthy – Healthy Lifestyle Builder</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #87CEEB;
+      --green:  #4CAF50;
+      --yellow: #FFEB3B;
+      --text:   #424242;
+      --bg:     #F5F5F5;
+      --white:  #ffffff;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--white);
+      padding: 16px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+    }
+    .logo span { color: var(--blue); }
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      margin-left: 28px;
+      font-size: .95rem;
+    }
+    nav a:hover { color: var(--green); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #e8f7ff 0%, #e8f5e9 60%, #fffde7 100%);
+      padding: 80px 48px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .hero-text { flex: 1; min-width: 300px; max-width: 560px; }
+    .hero-tag {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--text);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--green);
+    }
+    .hero h2 {
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: #5a5a5a;
+      margin-bottom: 28px;
+    }
+    .benefit-summary {
+      background: var(--white);
+      border-left: 4px solid var(--green);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      font-size: .97rem;
+      color: #555;
+      margin-bottom: 32px;
+    }
+    .cta-group { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background .2s, transform .1s;
+    }
+    .btn-primary:hover { background: #388E3C; transform: translateY(-1px); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--green);
+      border: 2px solid var(--green);
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background .2s, color .2s;
+    }
+    .btn-secondary:hover { background: var(--green); color: var(--white); }
+
+    /* ── HERO SHOT (phone mockup) ── */
+    .hero-visual { flex: 0 0 auto; display: flex; justify-content: center; }
+    .phone {
+      width: 230px;
+      background: #1a1a1a;
+      border-radius: 36px;
+      padding: 14px 10px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.25);
+    }
+    .phone-screen {
+      background: var(--white);
+      border-radius: 26px;
+      overflow: hidden;
+      font-size: .7rem;
+    }
+    .phone-status {
+      background: var(--green);
+      color: var(--white);
+      text-align: center;
+      padding: 8px 0 6px;
+      font-weight: 700;
+      font-size: .75rem;
+      letter-spacing: .04em;
+    }
+    .phone-logo {
+      text-align: center;
+      padding: 10px 0 4px;
+      font-weight: 800;
+      font-size: .9rem;
+      color: var(--green);
+    }
+    .phone-logo small { display: block; color: #888; font-size: .6rem; font-weight: 400; }
+    .phone-score-card {
+      margin: 6px 8px;
+      background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+    .score-label { font-size: .6rem; color: #666; margin-bottom: 4px; }
+    .score-ring {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: conic-gradient(var(--green) 78%, #e0e0e0 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 4px;
+    }
+    .score-inner {
+      width: 40px;
+      height: 40px;
+      background: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem;
+      font-weight: 800;
+      color: var(--green);
+    }
+    .phone-stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: .55rem;
+      color: #555;
+      margin-top: 4px;
+    }
+    .phone-stats div { text-align: center; }
+    .phone-stats strong { display: block; color: var(--text); font-size: .62rem; }
+    .phone-cards {
+      display: flex;
+      gap: 6px;
+      padding: 6px 8px;
+    }
+    .phone-card {
+      flex: 1;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 8px 6px;
+      text-align: center;
+      font-size: .58rem;
+    }
+    .phone-card .icon { font-size: 1.1rem; margin-bottom: 2px; }
+    .phone-card strong { display: block; font-size: .6rem; color: var(--text); }
+    .phone-card span { color: #777; }
+    .phone-nav {
+      display: flex;
+      justify-content: space-around;
+      padding: 6px 4px 8px;
+      border-top: 1px solid #eee;
+      font-size: .5rem;
+      color: #aaa;
+    }
+    .phone-nav div { text-align: center; }
+    .phone-nav .icon { font-size: .9rem; }
+    .phone-nav .active { color: var(--green); }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 64px 48px; }
+    .section-label {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+    h3.section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 40px;
+    }
+
+    /* ── BENEFITS ── */
+    .benefits { background: var(--white); }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .benefit-card {
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 28px 22px;
+      border-top: 4px solid var(--green);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .benefit-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,.1); }
+    .benefit-card:nth-child(2) { border-top-color: var(--blue); }
+    .benefit-card:nth-child(3) { border-top-color: var(--yellow); }
+    .benefit-card:nth-child(4) { border-top-color: #FF7043; }
+    .benefit-card:nth-child(5) { border-top-color: #AB47BC; }
+    .benefit-icon { font-size: 2rem; margin-bottom: 12px; }
+    .benefit-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .benefit-card p { font-size: .9rem; color: #666; }
+
+    /* ── SOCIAL PROOF ── */
+    .social-proof { background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%); }
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .testimonial {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 28px 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.07);
+      position: relative;
+    }
+    .testimonial::before {
+      content: '"';
+      font-size: 4rem;
+      color: var(--green);
+      opacity: .15;
+      position: absolute;
+      top: 10px;
+      left: 18px;
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+    .stars { color: #FFCA28; font-size: 1rem; margin-bottom: 10px; }
+    .testimonial p { font-size: .95rem; color: #555; margin-bottom: 18px; font-style: italic; }
+    .reviewer { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .reviewer-info strong { display: block; font-size: .9rem; color: var(--text); }
+    .reviewer-info span { font-size: .8rem; color: #888; }
+
+    /* ── FINAL CTA BANNER ── */
+    .cta-banner {
+      background: var(--green);
+      color: var(--white);
+      text-align: center;
+      padding: 64px 48px;
+    }
+    .cta-banner h3 { font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+    .cta-banner p { font-size: 1.05rem; opacity: .9; margin-bottom: 32px; }
+    .btn-white {
+      background: var(--white);
+      color: var(--green);
+      border: none;
+      padding: 15px 36px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background .2s, transform .1s;
+    }
+    .btn-white:hover { background: var(--yellow); color: var(--text); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--text);
+      color: #ccc;
+      text-align: center;
+      padding: 24px 48px;
+      font-size: .85rem;
+    }
+    footer strong { color: var(--white); }
+
+    @media (max-width: 700px) {
+      nav { padding: 14px 20px; }
+      nav a { display: none; }
+      .hero { padding: 48px 20px 40px; }
+      .hero h1 { font-size: 2.1rem; }
+      section { padding: 48px 20px; }
+      .cta-banner { padding: 48px 20px; }
+      footer { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 34s-14-9-14-19a8 8 0 0 1 14-5.3A8 8 0 0 1 34 15c0 10-14 19-14 19z"
+            fill="#4CAF50" opacity=".25"/>
+      <path d="M20 32s-12-8-12-17a6 6 0 0 1 12-2 6 6 0 0 1 12 2c0 9-12 17-12 17z"
+            stroke="#4CAF50" stroke-width="2" fill="none"/>
+      <path d="M16 20 c0-4 4-6 4-6 s4 2 4 6" stroke="#87CEEB" stroke-width="2" fill="none"/>
+      <circle cx="20" cy="21" r="2" fill="#FFEB3B"/>
+    </svg>
+    Go<span>Healthy</span>
+  </div>
+  <div>
+    <a href="#benefits">Benefits</a>
+    <a href="#proof">Reviews</a>
+    <a href="#cta-final">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="hero-tag">New – Free 30-Day Trial</span>
+
+    <!-- 1A Main Headline -->
+    <h1>Be Healthy,<br>Feel <em>Better</em>,<br>Live Better</h1>
+
+    <!-- 1B Supporting Headline -->
+    <h2>GoHealthy is an easy-to-use app that helps you improve your health by guiding you to exercise, eat well, and make smarter shopping decisions — all in one place.</h2>
+
+    <!-- 1D Benefit Summary -->
+    <div class="benefit-summary">
+      GoHealthy is your all-in-one wellness companion for fitness, mental health, personalised eating advice, and healthy grocery choices. Two-thirds of Australians already use their phones for health — make yours count.
+    </div>
+
+    <!-- 2 Call to Action -->
+    <div class="cta-group">
+      <a href="#cta-final" class="btn-primary">Start Your Free 30-Day Trial</a>
+      <a href="#cta-final" class="btn-secondary">Get Health Tips &amp; Updates</a>
+    </div>
+  </div>
+
+  <!-- 1C Hero Shot -->
+  <div class="hero-visual">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-status">GoHealthy</div>
+        <div class="phone-logo">
+          GoHealthy
+          <small>Healthy Lifestyle Builder</small>
+        </div>
+        <div class="phone-score-card">
+          <div class="score-label">Daily Wellness Score</div>
+          <div class="score-ring">
+            <div class="score-inner">78</div>
+          </div>
+          <div class="phone-stats">
+            <div><strong>8,450</strong>Steps</div>
+            <div><strong>5/8</strong>Water</div>
+            <div><strong>15 min</strong>Mindful</div>
+          </div>
+        </div>
+        <div class="phone-cards">
+          <div class="phone-card">
+            <div class="icon">🍽️</div>
+            <strong>Nutrition</strong>
+            <span>Grilled Salad</span>
+          </div>
+          <div class="phone-card">
+            <div class="icon">🏋️</div>
+            <strong>Workout</strong>
+            <span>30 min Cardio</span>
+          </div>
+        </div>
+        <div class="phone-nav">
+          <div class="active"><div class="icon">🏠</div>Home</div>
+          <div><div class="icon">🥦</div>Nutrition</div>
+          <div><div class="icon">🏃</div>Workout</div>
+          <div><div class="icon">🧘</div>Wellness</div>
+          <div><div class="icon">🛒</div>Shop</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 BENEFITS -->
+<section class="benefits" id="benefits">
+  <p class="section-label">Why GoHealthy</p>
+  <h3 class="section-title">Everything you need to live healthier</h3>
+  <div class="benefits-grid">
+    <div class="benefit-card">
+      <div class="benefit-icon">🏃</div>
+      <h4>Exercise Support</h4>
+      <p>Personalised training schedules, daily activity tracking, and workout tips aligned to your fitness goals.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">🧠</div>
+      <h4>Mental Health Support</h4>
+      <p>Mood tracking, stress-relief recommendations, and guided mindfulness tools to keep you mentally balanced.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">🥗</div>
+      <h4>Healthy Eating Guidance</h4>
+      <p>Meal ideas, diet tips, and nutrition information to help you make better food choices every day.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">🛒</div>
+      <h4>Smart Healthy Shopping</h4>
+      <p>Scan barcodes at the supermarket to instantly see health ratings and find healthier alternatives.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">✨</div>
+      <h4>All-in-One Convenience</h4>
+      <p>Manage fitness, mental health, diet, and shopping in a single app — no more juggling multiple tools.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 SOCIAL PROOF -->
+<section class="social-proof" id="proof">
+  <p class="section-label">Social Proof</p>
+  <h3 class="section-title">What people are saying</h3>
+  <div class="testimonials">
+
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p>GoHealthy changed the way I grocery shop. The barcode scanner is a game-changer — I finally know what's actually in my food. I've dropped 4 kg without feeling like I'm on a diet.</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:#4CAF50;">S</div>
+        <div class="reviewer-info">
+          <strong>Sarah M.</strong>
+          <span>University student, Melbourne</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p>As a dietitian, I recommend apps that give evidence-based nutrition guidance. GoHealthy stands out because it combines eating, exercise, and mental wellness in one place — something my clients genuinely needed.</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:#87CEEB;">D</div>
+        <div class="reviewer-info">
+          <strong>Dr. Priya Nair</strong>
+          <span>Accredited Practising Dietitian</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p>I work long hours and never had time to think about health. GoHealthy's daily dashboard keeps me accountable in under 5 minutes a day. The mood tracker alone is worth downloading it for.</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:#FF7043;">J</div>
+        <div class="reviewer-info">
+          <strong>James T.</strong>
+          <span>Software engineer, Sydney</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial">
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <p>We introduced GoHealthy into our student wellness programme and uptake was immediate. Students love that it feels like a companion, not a lecture. A genuinely impressive piece of health technology.</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:#AB47BC;">L</div>
+        <div class="reviewer-info">
+          <strong>Lisa Chen</strong>
+          <span>Student Wellbeing Coordinator, Deakin University</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-banner" id="cta-final">
+  <h3>Take charge of your health today</h3>
+  <p>One smart app for your body, mind, and daily choices. Free for 30 days — no credit card required.</p>
+  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+    <a href="#" class="btn-white">Start Your Free 30-Day Trial</a>
+    <a href="#" class="btn-white" style="background:transparent;border:2px solid #fff;color:#fff;">Get Health Tips &amp; Updates</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>GoHealthy</strong> &mdash; Healthy Lifestyle Builder &nbsp;|&nbsp; Team 10, SIT726 &nbsp;|&nbsp; &copy; 2026
+</footer>
+
+</body>
+</html>
